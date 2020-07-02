@@ -1,0 +1,250 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>数据操作 - 数据表格</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../js/layuiAdmin/layuiadmin/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="../../js/layuiAdmin/layuiadmin/style/admin.css" media="all">
+</head>
+<body>
+
+  <div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+      <a lay-href="">主页</a>
+      <a><cite>组件</cite></a>
+      <a><cite>数据表格</cite></a>
+      <a><cite>数据操作</cite></a>
+    </div>
+  </div>
+  <div id="editdialog" style="display: none">
+      <form class="layui-form" lay-filter="userform">
+          <div class="layui-form-item">
+              <label class="layui-form-label">用户ID</label>
+              <div class="layui-input-block">
+                  <input type="text" id="userid" style="width: 70%" name="id" placeholder="请输入" autocomplete="off" disabled class="layui-input">
+              </div>
+          </div>
+          <div class="layui-form-item">
+              <label class="layui-form-label">用户名</label>
+              <div class="layui-input-block">
+                  <input type="text" style="width: 70%" name="username" placeholder="请输入" autocomplete="off" class="layui-input">
+              </div>
+          </div>
+          <div class="layui-form-item">
+              <label class="layui-form-label">结束日期</label>
+              <div class="layui-input-block">
+                  <input type="text" style="width: 70%" id="endtime" name="endtime" placeholder="请输入" autocomplete="off" class="layui-input">
+              </div>
+          </div>
+          <div class="layui-form-item layui-hide">
+              <input type="button" lay-submit lay-filter="ajax-form" id="form-submit"
+                     value="确认添加">
+          </div>
+      </form>
+  </div>
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-body">
+              <div class="test-table-reload-btn" style="margin-bottom: 10px;">
+                  搜索用户名：
+                  <div class="layui-inline">
+                      <input class="layui-input" name="username" id="test-table-demoReload" autocomplete="off">
+                  </div>
+                  <button class="layui-btn" data-type="reload">搜索</button>
+                  <button class="layui-btn" data-type="add">添加</button>
+              </div>
+              <table class="layui-hide" id="test-table-operate" lay-filter="test-table-operate"></table>
+
+            <script type="text/html" id="test-table-operate-barDemo">
+              <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+              <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+              <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+            </script>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../js/layuiAdmin/layuiadmin/layui/layui.js"></script>
+
+  <script>
+  layui.config({
+    base: '../../js/layuiAdmin/layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'table', 'form','laydate'], function(){
+    var table = layui.table
+        ,form = layui.form
+        ,laydate = layui.laydate
+        ,admin = layui.admin;
+
+    laydate.render({
+      elem: '#endtime' //指定元素
+        ,type: 'datetime'
+    });
+
+    var usertable = table.render({
+      elem: '#test-table-operate'
+      ,url: '../../users'
+      ,width: admin.screen() > 1 ? 892 : ''
+      ,height: 700
+      ,cols: [[
+        {type:'checkbox', fixed: 'left'}
+        ,{field:'id', width:80, title: 'ID'}
+        ,{field:'username', width:200, title: '用户名'}
+        ,{field:'endtime', width:200, title: '到期时间'}
+        ,{ align:'center', toolbar: '#test-table-operate-barDemo'}
+      ]]
+      ,page: true
+      ,response: {
+           statusName: 'code' //规定数据状态的字段名称，默认：code
+          ,statusCode: 200 //规定成功的状态码，默认：0
+          ,msgName: 'msg' //规定状态信息的字段名称，默认：msg
+          ,countName: 'count' //规定数据总数的字段名称，默认：count
+          ,dataName: 'data' //规定数据列表的字段名称，默认：data
+      }
+    });
+      var $ = layui.$, active = {
+          reload: function(){
+              var demoReload = $('#test-table-demoReload');
+
+              //执行重载
+              table.reload('test-table-operate', {
+                  page: {
+                      curr: 1 //重新从第 1 页开始
+                  }
+                  ,where: {
+                      // key: {
+                      username: demoReload.val()
+                      // }
+                  }
+              });
+          },
+          add: function(){
+              // $("#ajax-form")[0].reset();
+              $("#userid").attr("disabled",false)
+              dialog = layer.open({
+                  type: 1
+                  , title: "添加配置信息"
+                  , content:  $("#editdialog")
+                  , maxmin: true
+                  , area: ['350px', '400px']
+                  , btn: ['确定', '取消']
+                  , yes: function (index, layero) {
+                      var submit = $("#form-submit");
+                      submit.click();
+                  }
+              });
+          }
+      };
+      $('.test-table-reload-btn .layui-btn').on('click', function(){
+          var type = $(this).data('type');
+          active[type] ? active[type].call(this) : '';
+      });
+    //监听表格复选框选择
+    table.on('checkbox(test-table-operate)', function(obj){
+      console.log(obj)
+    });
+    //监听工具条
+    table.on('tool(test-table-operate)', function(obj){
+        console.log(obj.event);
+      var data = obj.data;
+      if(obj.event === 'detail'){
+        layer.msg('ID：'+ data.id + ' 的查看操作');
+      } else if(obj.event === 'del'){
+        layer.confirm('真的删除行么', function(index){
+            // console.log(obj.data.id);
+            var userid = obj.data.id
+            $.ajax({
+                url: "../../deleteusers",
+                async:true,
+                dataType:"json",
+                type:"POST",
+                data:{"userid":userid},
+                success:function(re){
+                    if (re){
+                        layer.msg('删除成功');
+                        layui.table.reload('test-table-operate'); //重载表格
+                    }else {
+                        layer.msg('删除失败');
+                    }
+                }
+            })
+
+        });
+      } else if(obj.event === 'edit'){
+        // layer.alert('编辑行：<br>'+ JSON.stringify(data));
+
+        form.val("userform",obj.data);
+          $("#userid").attr("disabled",true)
+        dialog = layer.open({
+          type: 1
+          , title: "添加配置信息"
+          , content:  $("#editdialog")
+          , maxmin: true
+          , area: ['350px', '400px']
+          , btn: ['确定', '取消']
+          , yes: function (index, layero) {
+              var submit = $("#form-submit");
+              submit.click();
+          }
+        });
+      }
+    });
+
+      form.on('submit(ajax-form)', function(data){
+          $.ajax({
+              type: "POST",
+              //提交表单请带上header,后台进行了判断,可以避免快速重复提交
+              // headers: {
+              //     '-token-':commonParams.token
+              // },
+              url: "../../save",
+              data: data.field,
+              dataType: "json",
+              success: function (r) {
+                  if (r) {
+                      layer.msg("保存成功", {icon: "1"})
+                      layui.table.reload('test-table-operate'); //重载表格
+                      layer.close(dialog);
+                  } else {
+                      layer.msg("保存失败", {icon: "2"})
+                  }
+              }
+          });
+      });
+    //
+    // var $ = layui.$, active = {
+    //   getCheckData: function(){ //获取选中数据
+    //     var checkStatus = table.checkStatus('test-table-operate')
+    //     ,data = checkStatus.data;
+    //     layer.alert(JSON.stringify(data));
+    //   }
+    //   ,getCheckLength: function(){ //获取选中数目
+    //     var checkStatus = table.checkStatus('test-table-operate')
+    //     ,data = checkStatus.data;
+    //     layer.msg('选中了：'+ data.length + ' 个');
+    //   }
+    //   ,isAll: function(){ //验证是否全选
+    //     var checkStatus = table.checkStatus('test-table-operate');
+    //     layer.msg(checkStatus.isAll ? '全选': '未全选')
+    //   }
+    // };
+    //
+    // $('.test-table-operate-btn .layui-btn').on('click', function(){
+    //   var type = $(this).data('type');
+    //   active[type] ? active[type].call(this) : '';
+    // });
+
+  });
+  </script>
+</body>
+</html>

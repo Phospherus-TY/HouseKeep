@@ -1,0 +1,386 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>数据操作 - 数据表格</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../js/layuiAdmin/layuiadmin/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="../../js/layuiAdmin/layuiadmin/style/admin.css" media="all">
+</head>
+<body>
+
+<!--  <div class="layui-card layadmin-header">-->
+<!--    <div class="layui-breadcrumb" lay-filter="breadcrumb">-->
+<!--      <a lay-href="">主页</a>-->
+<!--      <a><cite>组件</cite></a>-->
+<!--      <a><cite>数据表格</cite></a>-->
+<!--      <a><cite>数据操作</cite></a>-->
+<!--    </div>-->
+<!--  </div>-->
+  <div id="editdialog" style="display: none">
+      <form class="layui-form" lay-filter="userform">
+          <div class="layui-form-item">
+              <label class="layui-form-label">姓名</label>
+              <div class="layui-input-inline">
+                  <input type="text" id="name" style="width: 100%" name="name" placeholder="请输入" autocomplete="off"  class="layui-input">
+              </div>
+              <label class="layui-form-label" style="width: 21%;">联系电话</label>
+              <div class="layui-input-inline">
+                  <input type="text" id="telnumber" style="width: 100%" name="telnumber" placeholder="请输入" autocomplete="off"  class="layui-input">
+              </div>
+          </div>
+          <div class="layui-form-item">
+              <label class="layui-form-label">地址</label>
+              <div class="layui-input-block">
+                  <input type="text" id="local" style="width: 85%" name="local" placeholder="请输入" autocomplete="off" class="layui-input">
+              </div>
+          </div>
+          <div class="layui-form-item">
+              <label class="layui-form-label ">第一次服务</label>
+              <div class="layui-input-inline">
+                  <input type="text" style="width: 100%" id="firsttime" name="firsttime" placeholder="YYYY-MM-DD" autocomplete="off" class="layui-input datetype">
+              </div>
+              <label class="layui-form-label" style="width: 21%;">第一次服务备注</label>
+              <div class="layui-input-inline">
+                  <input type="text" style="width: 100%" id="firsttimebz" name="firsttimebz" placeholder="请输入" autocomplete="off" class="layui-input">
+              </div>
+          </div>
+          <div class="layui-form-item">
+              <label class="layui-form-label">第二次服务</label>
+              <div class="layui-input-inline">
+                  <input type="text" style="width: 100%" id="secondtime" name="secondtime" placeholder="YYYY-MM-DD" autocomplete="off" class="layui-input datetype">
+              </div>
+              <label class="layui-form-label" style="width: 21%;">第二次服务备注</label>
+              <div class="layui-input-inline">
+                  <input type="text" style="width: 100%" id="secondtimebz" name="secondtimebz" placeholder="请输入" autocomplete="off" class="layui-input">
+              </div>
+          </div>
+          <div class="layui-form-item">
+              <label class="layui-form-label">第三次服务</label>
+              <div class="layui-input-inline">
+                  <input type="text" style="width: 100%" id="thirdtime" name="thirdtime" placeholder="YYYY-MM-DD" autocomplete="off" class="layui-input datetype">
+              </div>
+              <label class="layui-form-label" style="width: 21%;">第三次服务备注</label>
+              <div class="layui-input-inline">
+                  <input type="text" style="width: 100%" id="thirdtimebz" name="thirdtimebz" placeholder="请输入" autocomplete="off" class="layui-input">
+              </div>
+          </div>
+          <div class="layui-form-item">
+              <label class="layui-form-label">第四次服务</label>
+              <div class="layui-input-inline">
+                  <input type="text" style="width: 100%" id="fourthtime" name="fourthtime" placeholder="YYYY-MM-DD" autocomplete="off" class="layui-input datetype">
+              </div>
+              <label class="layui-form-label" style="width: 21%;">第四次服务备注</label>
+              <div class="layui-input-inline">
+                  <input type="text" style="width: 100%" id="fourthtimebz" name="fourthtimebz" placeholder="请输入" autocomplete="off" class="layui-input">
+              </div>
+          </div>
+          <div class="layui-form-item">
+              <label class="layui-form-label">面积</label>
+              <div class="layui-input-inline">
+                  <input type="text" style="width: 100%" id="area" name="area" placeholder="请输入" autocomplete="off" class="layui-input">
+              </div>
+              <div class="layui-input-inline" style="width: 10px;">
+                  <span>m²</span>
+              </div>
+              <label class="layui-form-label" style="width: 18.5%;">价格</label>
+              <div class="layui-input-inline">
+                  <input type="text" style="width: 100%" id="price" name="price" placeholder="请输入" autocomplete="off" class="layui-input">
+              </div>
+          </div>
+          <div class="layui-form-item">
+              <label class="layui-form-label">收款时间</label>
+              <div class="layui-input-inline">
+                  <input type="text" style="width: 100%" id="collectiontime" name="collectiontime" placeholder="YYYY-MM-DD" autocomplete="off" class="layui-input datetype">
+              </div>
+              <label class="layui-form-label" style="width: 21%;">客户来源</label>
+              <div class="layui-input-inline">
+                  <input type="text" style="width: 100%" id="collectionway" name="collectionway" placeholder="请输入" autocomplete="off" class="layui-input">
+              </div>
+          </div>
+          <div class="layui-form-item">
+              <label class="layui-form-label">备注</label>
+              <div class="layui-input-block">
+                  <input type="text" id="bz" style="width: 85%" name="bz" placeholder="请输入" autocomplete="off" class="layui-input">
+              </div>
+          </div>
+          <div class="layui-form-item layui-hide">
+              <button id="reset" type="reset" class="layui-btn layui-btn-primary">重置</button>
+              <input type="button" lay-submit lay-filter="ajax-form" id="form-submit"
+                     value="确认添加">
+          </div>
+      </form>
+  </div>
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-body">
+              <div class="test-table-reload-btn" style="margin-bottom: 10px;">
+                  搜索用户名：
+                  <div class="layui-inline">
+                      <input class="layui-input" name="username" id="test-table-demoReload" autocomplete="off">
+                  </div>
+                  <button class="layui-btn" data-type="reload">搜索</button>
+                  <button class="layui-btn" data-type="add">添加</button>
+                  <button class="layui-btn" data-type="update">检查</button>
+              </div>
+              <table class="layui-hide" id="test-table-operate" lay-filter="test-table-operate"></table>
+
+            <script type="text/html" id="test-table-operate-barDemo">
+              <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+              <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+<!--              <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
+            </script>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../js/layuiAdmin/layuiadmin/layui/layui.js"></script>
+  <script src="../../js/common.js"></script>
+  <script>
+      // $(function () {
+      //
+      // })
+      var model = getcode("model");
+  var today = new Date().getFullYear()+"-"+(new Date().getMonth()+1)+"-"+new Date().getDate();
+  layui.config({
+    base: '../../js/layuiAdmin/layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'table', 'form','laydate'], function(){
+    var table = layui.table
+        ,form = layui.form
+        ,laydate = layui.laydate
+        ,laydate1 = layui.laydate
+        ,laydate2 = layui.laydate
+        ,laydate3 = layui.laydate
+        ,laydate4 = layui.laydate
+        ,admin = layui.admin;
+
+    laydate.render({
+      elem: '#firsttime' //指定元素
+        ,type: 'date'
+    });
+    laydate1.render({
+      elem: '#secondtime' //指定元素
+        ,type: 'date'
+    });
+    laydate2.render({
+      elem: '#thirdtime' //指定元素
+        ,type: 'date'
+    });
+    laydate3.render({
+      elem: '#fourthtime' //指定元素
+        ,type: 'date'
+    });
+    laydate4.render({
+      elem: '#collectiontime' //指定元素
+        ,type: 'date'
+    });
+
+    var usertable = table.render({
+         elem: '#test-table-operate'
+        ,url: '../../selorderinfo'
+      // ,width: admin.screen() > 1 ? 892 : ''
+        ,height: 700
+        ,where:{
+          type:model
+        }
+        ,cols: [[
+            {type:'checkbox', fixed: 'left'}
+            ,{field:'index', width:50, title: '序号',type:'numbers'}
+            ,{field:'name', width:80, title: '姓名'}
+            ,{field:'telnumber', width:150, title: '联系电话'}
+            ,{field:'local', width:200, title: '地址'}
+            ,{field:'firsttime', width:130, title: '第一次服务时间',templet:function (res) {
+                var date = new Date(res.firsttime).getFullYear()+"-"+(new Date(res.firsttime).getMonth()+1)+"-"+new Date(res.firsttime).getDate();
+                if (date == today && res.firststatus!=1){
+                    return date+"<span style='float: right' class=\"layui-badge\">!</span>"
+                }else {
+                    return date
+                }
+                }}
+            ,{field:'secondtime', width:130, title: '第二次服务时间',templet:function (res) {
+                    var date = new Date(res.secondtime).getFullYear()+"-"+(new Date(res.secondtime).getMonth()+1)+"-"+new Date(res.secondtime).getDate();
+                    if (date == today && res.secondstatus!=1){
+                        return date+"<span style='float: right' class=\"layui-badge\">!</span>"
+                    }else {
+                        return date
+                    }                }}
+            ,{field:'thirdtime', width:130, title: '第三次服务时间',templet:function (res) {
+                    var date = new Date(res.thirdtime).getFullYear()+"-"+(new Date(res.thirdtime).getMonth()+1)+"-"+new Date(res.thirdtime).getDate();
+                    if (date == today && res.thirdstatus!=1){
+                        return date+"<span style='float: right' class=\"layui-badge\">!</span>"
+                    }else {
+                        return date
+                    }                }}
+            ,{field:'fourthtime', width:130, title: '第四次服务时间',templet:function (res) {
+                    var date = new Date(res.fourthtime).getFullYear()+"-"+(new Date(res.fourthtime).getMonth()+1)+"-"+new Date(res.fourthtime).getDate();
+                    if (date == today && res.fourthstatus!=1){
+                        return date+"<span style='float: right' class=\"layui-badge\">!</span>"
+                    }else {
+                        return date
+                    }                }}
+            ,{field:'collectiontime', width:130, title: '收款时间',templet:function (res) {
+                    var date = new Date(res.collectiontime).getFullYear()+"-"+(new Date(res.collectiontime).getMonth()+1)+"-"+new Date(res.collectiontime).getDate();
+                    if (date <= today){
+                        return date+"<span style='float: right' class=\"layui-badge\">超期</span>"
+                    }else {
+                        return date
+                    }                }}
+            ,{field:'area', width:80, title: '总面积'}
+            ,{field:'price', width:80, title: '价格'}
+            ,{field:'collectionway', width:80, title: '来源'}
+            ,{field:'source', width:100, title: '收款方式'}
+            ,{field:'bz', width:200, title: '备注'}
+            ,{ align:'center', width:120,toolbar: '#test-table-operate-barDemo',fixed:"right"}
+          ]]
+        ,page: true
+        ,response: {
+            statusName: 'code' //规定数据状态的字段名称，默认：code
+            ,statusCode: 200 //规定成功的状态码，默认：0
+            ,msgName: 'msg' //规定状态信息的字段名称，默认：msg
+            ,countName: 'count' //规定数据总数的字段名称，默认：count
+            ,dataName: 'data' //规定数据列表的字段名称，默认：data
+        }
+    });
+      var $ = layui.$, active = {
+          reload: function(){
+              var demoReload = $('#test-table-demoReload');
+
+              //执行重载
+              table.reload('test-table-operate', {
+                  page: {
+                      curr: 1 //重新从第 1 页开始
+                  }
+                  ,where: {
+                      username: demoReload.val()
+                  }
+              });
+          },
+          add: function(){
+              // $("#ajax-form")[0].reset();
+              // $("#userid").attr("disabled",false)
+              $("#reset").trigger("click");
+              dialog = layer.open({
+                  type: 1
+                  , title: "添加配置信息"
+                  , content:  $("#editdialog")
+                  , maxmin: true
+                  , area: ['800px', '600px']
+                  , btn: ['确定', '取消']
+                  , yes: function (index, layero) {
+                      var submit = $("#form-submit");
+                      submit.click();
+                  }
+              });
+          }
+      };
+      $('.test-table-reload-btn .layui-btn').on('click', function(){
+          var type = $(this).data('type');
+          active[type] ? active[type].call(this) : '';
+      });
+    //监听表格复选框选择
+    table.on('checkbox(test-table-operate)', function(obj){
+      console.log(obj)
+    });
+    //监听工具条
+    table.on('tool(test-table-operate)', function(obj){
+        console.log(obj.event);
+      var data = obj.data;
+      if(obj.event === 'detail'){
+          form.val("userform",obj.data);
+          $("#userid").attr("disabled",true)
+          dialog = layer.open({
+              type: 1
+              , title: "添加配置信息"
+              , content:  $("#editdialog")
+              , maxmin: true
+              , area: ['800px', '600px']
+          });
+        // layer.msg('ID：'+ data.id + ' 的查看操作');
+      } else if(obj.event === 'del'){
+
+      } else if(obj.event === 'edit'){
+        form.val("userform",obj.data);
+        dialog = layer.open({
+          type: 1
+          , title: "添加配置信息"
+          , content:  $("#editdialog")
+          , maxmin: true
+          , area: ['800px', '600px']
+          , btn: ['确定', '取消']
+          , yes: function (index, layero) {
+              var submit = $("#form-submit");
+              submit.click();
+          }
+        });
+      }
+    });
+
+      form.on('submit(ajax-form)', function(data){
+          $.ajax({
+              type: "POST",
+              url: "../../save",
+              data: data.field,
+              dataType: "json",
+              success: function (r) {
+                  if (r) {
+                      layer.msg("保存成功", {icon: "1"})
+                      layui.table.reload('test-table-operate');
+                      layer.close(dialog);
+                  } else {
+                      layer.msg("保存失败", {icon: "2"})
+                  }
+              }
+          });
+      });
+    //
+    // var $ = layui.$, active = {
+    //   getCheckData: function(){ //获取选中数据
+    //     var checkStatus = table.checkStatus('test-table-operate')
+    //     ,data = checkStatus.data;
+    //     layer.alert(JSON.stringify(data));
+    //   }
+    //   ,getCheckLength: function(){ //获取选中数目
+    //     var checkStatus = table.checkStatus('test-table-operate')
+    //     ,data = checkStatus.data;
+    //     layer.msg('选中了：'+ data.length + ' 个');
+    //   }
+    //   ,isAll: function(){ //验证是否全选
+    //     var checkStatus = table.checkStatus('test-table-operate');
+    //     layer.msg(checkStatus.isAll ? '全选': '未全选')
+    //   }
+    // };
+    //
+    // $('.test-table-operate-btn .layui-btn').on('click', function(){
+    //   var type = $(this).data('type');
+    //   active[type] ? active[type].call(this) : '';
+    // });
+
+  });
+  function todate(date) {
+      var indate =  new Date(date);
+      var year = indate.getFullYear();
+      var month = indate.getMonth()+1;
+      var day = indate.getDate();
+      if((indate.getMonth()+1)<10){
+          month="0"+month
+      }
+      if(indate.getDate()<10){
+          day="0"+day
+      }
+      return year+"-"+month+"-"+day
+
+
+  }
+  </script>
+</body>
+</html>
